@@ -1,3 +1,4 @@
+
 import numpy as np
 
 from qc_learn.abstract import (
@@ -7,6 +8,21 @@ from qc_learn.abstract import (
 )
 
 class SimulatedQubit(Qubit):
+    """
+    A class representing a simulated qubit.
+
+    Attributes:
+        H (np.ndarray): The Hadamard gate matrix.
+        KET_0 (np.ndarray): The ket 0 state matrix.
+        state (np.ndarray): The current state of the qubit.
+
+    Methods:
+        __init__(): Initializes the qubit.
+        h(): Applies the Hadamard gate to the qubit.
+        measure() -> bool: Measures the qubit and returns the measurement result.
+        reset(): Resets the qubit to the ket 0 state.
+    """
+
     H: np.ndarray[np.int32, np.dtype[np.int32]] = np.array([[1, 1], [1, -1]]) / np.sqrt(2)
     KET_0: np.ndarray[np.int32, np.dtype[np.int32]] = np.array([[1], [0]])
 
@@ -27,6 +43,18 @@ class SimulatedQubit(Qubit):
         self.state = self.KET_0.copy()
 
 class SingleQubitSimulator(QuantumDevice[SimulatedQubit]):
+    """
+    A class representing a single qubit simulator.
+
+    Attributes:
+        qubit (SimulatedQubit): The simulated qubit.
+
+    Methods:
+        __init__(): Initializes the simulator.
+        allocate_qubit() -> SimulatedQubit: Allocates a qubit.
+        deallocate_qubit(qubit: SimulatedQubit): Deallocates a qubit.
+    """
+
     def __init__(self) -> None:
         self.qubit = SimulatedQubit()
     
@@ -44,6 +72,7 @@ __all__ = [
 ]
 
 if __name__ == "__main__":
+    # example of creating a simulator
     qsim = SingleQubitSimulator()
     for idx_sample in range(10):
         random_sample = qrng(qsim)
